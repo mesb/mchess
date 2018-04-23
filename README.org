@@ -1,0 +1,400 @@
+#+title: A Chess Game program
+
+* Introduction
+** Meet mchess
+  This is the home of mchess. Mchess provides a chess board, chess pieces,
+  chess rules and an environment to support live games.
+
+  A chess game occurs between two players who use the pieces on the board with
+  the assistance of the rules of the game to effect the strategies and
+  eventually lose or win at endgame.
+
+  A chessboard is made of 64 squares that are arranged in an 8 x 8 grid.
+
+  A player performs actions by moving the chess pieces on the board.
+
+  There are 6 types of pieces in chess:
+  1. King
+  2. Queen
+  3. Knight
+  4. Bishop
+  5. Rook
+  6. Pawn
+
+  Each type of piece has its specific rules that govern its movements on the
+  chess board. These rules specify the legal moves from location to location on
+  the board.
+
+** Analogy
+   For a 2D or 3D perspective, a chessboard is seen as a square. But who says we
+   have to represent the board this way in the computer. The computer may have
+   its own view that best suits its tasks and enjoyment of the board.
+
+   Chess is both a language and the game. The language is used to communicate
+   actions during games. The may look something like: 
+
+   1. e4 e5
+   2. Nf3 Nc6
+   3. Bb5 a6
+
+   Move number 1 specifies that the piece(pawn) at location (e4) should be moved
+   to (e5). That is, it should be moved forward, one step.
+
+   The chess language is like assembly for the chess machine. Hence, we can
+   build chess as an interpreter.
+
+   A running chess game has the following essential pieces:
+   1. chess board
+   2. 2 players(black and white)
+   3. chess pieces
+   4. chess rules
+
+   The chess game is like an activity between 3 parties who have access to some
+   pieces that they can move around a number of rooms. The rooms are built into
+   a rather funny 64-storey building. The funny thing about the storey building
+   is that each floor has only 1 room large enough support the activities of the
+   game. The floors with their 1-room spaces are numbered from 0 to 64. There
+   are some elevators in the real world that skip some floor numbers, but the
+   elevator to this building has all the floors from 0 to 64.
+
+   Amongst the 3 parties, 2 of them, say mola and ni are the real players of the game. The 3rd
+   person, say Xmac, is an executor of commands or a robot that performs the tasks it's
+   instructed to do. Mola and Ni play the game taking turns and voicing their
+   commands to Xmac.
+
+   The game starts with Mola and Ni having access to a demarcated portion of
+   resources. That is, Mola and Ni own game pieces in the 64 rooms that are in
+   the storey building. Let's call the story building mondoni.
+
+   At the start, Mola's pieces or task forces are arranged in the first 16
+   rooms. Ni's pieces are arranged in the last 16 rooms. The remaining 32 rooms
+   between them are empty.
+
+   The main game is for Mola or Ni to first capture his oponent's King who will
+   be housed in 1 of the rooms. Mola and Ni all have, at every given time, full
+   understanding of the state of the game by virtue of the the location of each
+   other's pieces.
+
+   It's with information about where a player is, and where the oponent is, that
+   triggers the reason to make a certain move. In our case, it is the state of
+   the game that is the reason by any command given by Mola and Ni.
+
+   Xmac knows the rules of the game well, or perhaps it knows what to do in
+   order to look rules up. When Xmac receives a command, it checks if the move
+   is correct with the assistance of the rules of the game. For example, a pawn
+   can't move like a knight. Sometimes, one may give a wrong command; Xmac needs
+   to know which commands are wrongs and/or illegal.
+
+   If a command is correct or legal, Xmac executes the command by going to the
+   location of the piece in question and moving or displacing it to the
+   commanded location. All the attacks and background activities that happen in
+   the art of war that underlies this game are covered by the actions of Xmac.
+   Hence, Mola and Ni only need to trust Xmac with perfect execution. Xmac
+   justly and efficiently executes their commands, moving their pieces around as
+   they battle each other.
+
+
+* Components
+** Piece
+   The are 6 types of pieces: King, Queen, Bishop, Rook, Knight, and Pawn.
+   Each piece has the following properties:
+
+   1. type
+   2. location
+   3. camp
+   4. rules of engagement
+   5. status: deceased or alive?
+
+   Each piece is either alive or deceased during a game session. A piece that's
+   alive assumes a location on the chess board.
+
+   Players of the game move the pieces by dispatching them to new locations
+   where they'd be performing activities that contribute to the advancement of
+   the strategy of the player.
+
+   Each player can only move to new locations that are dictated by the laws that
+   govern the scope of the activities of its type(class).
+
+** Rule
+   A rule asserts the actions of a type of piece. Most of the rules are
+   behavioral, hence, each rule governs a specific type of piece. Each piece may
+   have several rules governing its total behavior in the game.
+
+   For example, a King can directly move to only 8 locations at any given time,
+   provided the locations are legal. The application of the rules also respond
+   the relative position of the King. For example, at the start of a game, a
+   King can't move. Even if all the squares around it are cleared, the King can
+   only move to 5 other spaces, since it's at one end of the board.
+
+   Rules are used to execute and oversee the game
+
+** Board
+   The stage on which everything happens. The board provides the players with a
+   sense of space that's been well annotated to ease execution of tasks in the
+   course of battle.
+
+   The board here is stored as an array of 64 cells each that can store a single
+   chess piece.
+
+   Each chess piece has a location which is made of its rank and file. The rank
+   and file of each piece will be translated into an effective address that's an
+   index to the board array of 64 pieces.
+
+   There are 8 ranks numbered from 1 to 8 and there 8 files lettered from a to
+   h.
+
+   The positions are read as such: (FileLetter, RankNumber) e.g e4, a1, a2, b4
+
+   This implies that the location of piece is specified by its rank and file.
+   The rank is an integer and the file is a letter. We can use ascii values to
+   represent the files. Below is a table for the ascii values of the file 
+
+   - a <-- 97
+   - b <-- 98
+   - c <-- 99
+   - d <-- 100
+   - e <-- 101
+   - f <-- 102
+   - g <-- 103
+   - h <-- 104
+
+   Interestingly, applying modulo 8 to these numbers yield results between 0
+   and 7.
+
+   The board is an array of size 64. Therefore, it's indices are in range 0
+   -- 63.
+
+   The piece on location a1 is sent to position board[0]. 
+
+   a1 --> board[0]
+   b1 --> board[1]
+   c1 --> board[2]
+   d1 --> board[3]
+   e1 --> board[4]
+   f1 --> board[5]
+   g1 --> board[6]
+   h1 --> board[7]
+
+   a2 --> board[8]
+   b2 --> board[9]
+
+   And so on...
+
+   Each piece's location is translated into an effective address using the
+   following formula:
+
+   Effective Address= ((offset * rowSize) + (int(asciiValOfFile) % rowSize)) - 1
+
+   The effective address is computed from the location of a piece in the
+   following way:
+
+   1. Obtain Rank and File as rank and file
+   2. Subtract 1 from the rank to get the offset and then multiply the result by
+      8 in order to obtain the section in which the piece is. Call result (row)
+   3. Obtain the integer value of the ascii representation of the file. Call
+      result ascii_int. Divide ascii_int by 8 so as to get the column of the
+      piece. There are 8 letters from a-h inclusive. Module 8 of their ascii
+      values give us results in the range 0 - 7.
+   4. Add the row to the column:  temp_addr = row + column
+   5. Subtract 1 from temp_addr: addr = temp_addr-1
+   6. Return addr
+
+
+
+*** Important Note
+    The name of a piece together with its location gives it's unique identity.
+    There are 8 pawns. They are just pawns in themselves, hence it's their
+    location that uniquely identifies them.
+
+    Pieces that are captured are taken off the board by setting their status to
+    deceased. A piece that captures another does so in the process of moving to
+    that destination.
+
+    Special moves like castle are special commands that can be implemented using
+    the legal rules and move procedures on the board.
+
+
+   
+
+
+
+* Logic or Design flow
+  - Each player is placed on the board by virtue of its address.
+  - The start game procedure sets up the initial and legal positions of the pieces.
+  - White or Black player alternating issuing commands and advancing the game
+  - Command has form: PIECE DEST
+
+  It follows that chess has just one primitive rule format. There are other
+  tactical rules like castling, but they can be expressed by several iterations
+  of the primitive rules.
+
+
+* Design Notes
+** The grammar
+   Mchess can be designed and implemented as an interpreter for the chess
+   language. The grammar is simple:
+
+   #+BEGIN_SRC 
+       mchess --> mexpr
+       mexpr ---> piece dest
+       piece ---> King | Queen | Bishop | Rook | Knight | Pawn 
+       dest ----> addr
+       addr ----> rank-column
+       rank ----> digit
+       column --> letter 
+       digit ---> 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7
+       letter --> a | b | c | d | e | f | g | h
+   #+END_SRC
+
+  
+
+** Rules
+   Rules govern the legal moves of each player in the game.
+
+   Should the rules apply to the pieces or to the players?
+
+   The rules of a player at a given point depends on the piece that's selected
+   and the position of that piece.
+
+   In other words, the rules are calculated on the fly. These are the rules that
+   erect the paths that the players take.
+
+   The rule can therefore work like so:
+
+   Get REQUEST for action to move piece by player. The feasibility of the move
+   depends on the location of the piece and the type of piece.
+
+   The piece at the commanded time has its current location. The command
+   specifies its destination. A correct move is possible if the one can navigate
+   to that destination; the move can be checked by deriving the destination from
+   the current location and the type of the piece.
+
+   Therefore, the Rules server can be a simply process that validates moves. It
+   attempts to derive the destination from the source location and the type of
+   piece. If the move is accepted, then the piece is transported to the
+   destination.
+
+   There are 2 types of rules:
+   1. Board rules that govern the use of locations on the board. Index problems
+   2. Type rules that govern the legal moves of the pieces.
+
+*** Rules for Board
+    Address space in memory is: 0 - 63. Nothing outside of that works
+
+*** Rules for Pieces
+    Each rule that governs a move deals with the following:
+    1. type
+    2. current location
+    3. destination location
+
+    There are 2 types of moves by virtue of long or short distance moves. 
+    1. Short or discrete moves: king, pawn, knight
+    2. Long or continuous moves: queen, rook, bishop
+
+    Chess is a game of strategy. We can examine our rules with interesting
+    analogies from war or monarchy.
+
+    The rules apply naturally to a divide and conquer or hierarchical
+    arrangement of the kindgom's powers. But the jurisdiction of each member of
+    the kingdom is relative to its position. 
+
+    Pieces generally move between ranks and files. The various rules aid the
+    correct composition of the moves between ranks and files amongst the various
+    types. 
+
+    The nature of chess as a game of strategy should suggest the importance of
+    its rules. The rules can be assumed to be designed such that they permit the
+    best efficiency for the game and its possible moves. For example, the
+    various patterns of the pieces enforce smooth execution of tactics. The 1
+    step motion of a pawn may turn to be the best move that a pawn in a
+    hypothetical kingdom needs.
+
+    The effects of the rules can be represented or interpreted geometrically.
+
+    It appears that every rule is derived from the King's rules. Every rule is a
+    specialization or extension of the king's rules. 
+
+**** King
+     The King can move to any of the 8 immediate squares that surround its
+     current location. The King's scope is the square of size 3 that envelopes
+     his current position which is at the center of the square.
+
+     The King's immediate reach is 9 square meters in area.
+
+**** Pawn 
+    The pawn moves 1 step up the ranks. A pawn would maintain its file until it
+    defeats and takes the territory of the opponent's piece. But it can go 1 step
+    diagonally in its direction of motion in the case it captures an oponent.
+    This rule simply gives that pawn the entitlement of the conquered piece's
+    territory or location.
+
+    The pawn can move twice at the start of the game. The pawn falls under the
+    short or discrete move types.
+
+**** Queen
+     The Queen is a continuous mover. Her authority spans to the ends of the
+     territory but destitute in the territories between the horizontal or
+     vertical and her main diagonals. 
+
+     Queen's reach is: +{KingsReach} that is the queen can make the moves of
+     the king, but she can extend the reach to the ends of the kingdom. Hence,
+     she can move horizontally, vertically and diagonally until the ends of the
+     board.
+
+**** Rook
+     The Rooks reach is: Ranks: minRank < Rook.Rank < maxRank 
+                                 && minFile < Rook.File < maxFile
+
+**** Bishop
+     The Bishop moves in diagonals only and is only limited by the ends of the
+     board. These moves are possible if no piece is obstructing its path.
+
+**** Knight
+     The Knight can move in an L shape but in any direction from it's location.
+     The knight's move can be broken down into 2 sub moves. The first move goes
+     2 steps in the rank or file direction. The first sub move affects the
+     second one. If the first move was done on a rank, then the last sub move is
+     1 step in the left or right direction(flank).
+
+     - start on rank(2 steps) and then go to file(1 step left or right)
+     - start on file(2 steps) and then go to rank(1 step up or down)
+
+     Overall, the Knight's reach is kind of a squared circle.
+
+     Since the knight moves 2 steps first and then 1 step(left, right, up or
+     down), the knight can not be in any of the locations that it arrives at
+     after the first submove. This is usually 2 steps in the vertical and
+     horizontal directions.
+
+     Can be derived from King's moves if one sees the knight as a king who can
+     advance 2 steps in all positions except the horizontal and vertical....
+
+     Knights reach is 25 square units. Knight is at the center of a square of
+     side 5 units. 
+
+
+
+
+
+
+    
+
+    
+
+    Every piece can make a single move, but not every piece can make long 
+
+    
+    
+    #+BEGIN_SRC 
+     PRule := KingRule or QueenRule or BishopRule or RookRule
+              or KnightRule or PawnRule
+
+     KingRule := 0-0 or 0-1 or 0-2 or
+                 1-0 or 1-1 or 1-2 or
+                 2-0 or 2-1 or 2-2
+
+     QueenRule ::= 
+    #+END_SRC
+   
+
+
