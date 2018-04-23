@@ -6,7 +6,7 @@
   chess rules and an environment to support live games.
 
   A chess game occurs between two players who use the pieces on the board with
-  the assistance of the rules of the game to effect the strategies and
+  the assistance of the rules of the game to effect their strategies and
   eventually lose or win at endgame.
 
   A chessboard is made of 64 squares that are arranged in an 8 x 8 grid.
@@ -27,7 +27,7 @@
 
 ** Analogy
    For a 2D or 3D perspective, a chessboard is seen as a square. But who says we
-   have to represent the board this way in the computer. The computer may have
+   have to represent the board this way in the computer? The computer may have
    its own view that best suits its tasks and enjoyment of the board.
 
    Chess is both a language and the game. The language is used to communicate
