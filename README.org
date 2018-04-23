@@ -239,9 +239,9 @@
        mexpr ---> piece dest
        piece ---> King | Queen | Bishop | Rook | Knight | Pawn 
        dest ----> addr
-       addr ----> rank-column
+       addr ----> column-rank
+       column --> letter
        rank ----> digit
-       column --> letter 
        digit ---> 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7
        letter --> a | b | c | d | e | f | g | h
    #+END_SRC
