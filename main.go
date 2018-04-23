@@ -18,6 +18,15 @@ func (a Addr) String() string {
 	return fmt.Sprintf("%c%v", f, a.rank)
 }
 
+func (a Addr) Index() (index int) {
+	r := int(a.rank)
+	f := int(a.file)
+
+	index = (r * BLOCKSIZE) + f
+
+	return
+}
+
 func MakeAddr(r rank, f file) Addr {
 	a := Addr{r, f}
 	return a
@@ -28,8 +37,19 @@ type Typ uint
 // the size of the board
 const BOARDSIZE = 64
 const BLOCKSIZE = 8 // blocks represent rows and colums
-const FIRSTRANK = 0
-const LASTRANK = 7
+
+// the uses of ranks and files appear often, so we need constants
+
+const (
+	FIRSTRANK = iota
+	SECONDRANK
+	THIRDRANK
+	FOURTHRANK
+	FIFTHRANK
+	SIXTHRANK
+	SEVENTHRANK
+	EIGTHRANK
+)
 
 // default first rank of every player
 var RANK1 = [BLOCKSIZE]Typ{Rook, Knight, Bishop, Queen, King, Bishop, Knight, Rook}
@@ -136,31 +156,28 @@ func InitBoard() *Board {
 		b.board[k] = empty
 	}
 
-	rank8 := (7 * 8)
-	rank7 := (7 * 7) - 1
-
 	// fill in white's player
 	for i := 0; i < BLOCKSIZE; i++ {
 
 		// add the first rank of player 1
 		addr := MakeAddr(rank(FIRSTRANK), file(i))
 		p := NewPiece(RANK1[i], addr, "Player 1", true)
-		b.board[i] = p
+		b.board[addr.Index()] = p
 
 		// add the pawns of player 1
-		addr = MakeAddr(rank(FIRSTRANK+1), file(i))
+		addr = MakeAddr(rank(SECONDRANK), file(i))
 		p = NewPiece(Pawn, addr, "Player 1", true)
-		b.board[i+BLOCKSIZE] = p
+		b.board[addr.Index()] = p
 
 		// add the ranks of player 2
-		addr = MakeAddr(rank(LASTRANK), file(i))
+		addr = MakeAddr(rank(EIGTHRANK), file(i))
 		p = NewPiece(RANK1[i], addr, "Player 2", true)
-		b.board[rank8+i] = p //
+		b.board[addr.Index()] = p //
 
 		// add the pawns of player 2
-		addr = MakeAddr(rank(LASTRANK-1), file(i))
+		addr = MakeAddr(rank(SEVENTHRANK), file(i))
 		p = NewPiece(Pawn, addr, "Player 2", true)
-		b.board[rank7+i] = p
+		b.board[addr.Index()] = p
 	}
 
 	// return board

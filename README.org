@@ -53,13 +53,14 @@
    pieces that they can move around a number of rooms. The rooms are built into
    a rather funny 64-storey building. The funny thing about the storey building
    is that each floor has only 1 room large enough support the activities of the
-   game. The floors with their 1-room spaces are numbered from 0 to 64. There
+   game. The floors with their 1-room spaces are numbered from 0 to 63. There
    are some elevators in the real world that skip some floor numbers, but the
-   elevator to this building has all the floors from 0 to 64.
+   elevator to this building has all the floors from 0 to 63.
 
-   Amongst the 3 parties, 2 of them, say mola and ni are the real players of the game. The 3rd
+   Amongst the 3 parties, 2 of them, say Mola and Ni are the real players of the game. The 3rd
    person, say Xmac, is an executor of commands or a robot that performs the tasks it's
-   instructed to do. Mola and Ni play the game taking turns and voicing their
+   instructed to do. Xmac can fly to any of the floors of the 64-storey building
+   and get or deposit a piece. Mola and Ni play the game taking turns and voicing their
    commands to Xmac.
 
    The game starts with Mola and Ni having access to a demarcated portion of
@@ -68,16 +69,16 @@
 
    At the start, Mola's pieces or task forces are arranged in the first 16
    rooms. Ni's pieces are arranged in the last 16 rooms. The remaining 32 rooms
-   between them are empty.
+   between them are empty and are the initial battle ground for the game.
 
    The main game is for Mola or Ni to first capture his oponent's King who will
    be housed in 1 of the rooms. Mola and Ni all have, at every given time, full
-   understanding of the state of the game by virtue of the the location of each
-   other's pieces.
+   understanding of the state of the game by virtue of the location of each
+   other's pieces. 
 
    It's with information about where a player is, and where the oponent is, that
-   triggers the reason to make a certain move. In our case, it is the state of
-   the game that is the reason by any command given by Mola and Ni.
+   players acquire their reason to make a certain move. In our case, it is the state of
+   the game that is the reason behind any command given by Mola and Ni.
 
    Xmac knows the rules of the game well, or perhaps it knows what to do in
    order to look rules up. When Xmac receives a command, it checks if the move
@@ -89,6 +90,8 @@
    location of the piece in question and moving or displacing it to the
    commanded location. All the attacks and background activities that happen in
    the art of war that underlies this game are covered by the actions of Xmac.
+   
+
    Hence, Mola and Ni only need to trust Xmac with perfect execution. Xmac
    justly and efficiently executes their commands, moving their pieces around as
    they battle each other.
