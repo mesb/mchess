@@ -25,6 +25,18 @@ const (
 	EIGTHRANK
 )
 
+// the files too have their names or symbols: A-H
+const (
+	A = iota
+	B
+	C
+	D
+	E
+	F
+	G
+	H
+)
+
 // default first rank of every player
 // we can simply use this to populate the first rank of all players
 var DEFAULTFIRSTRANK = [BLOCKSIZE]pieces.Typ{pieces.Rook, pieces.Knight, pieces.Bishop, pieces.Queen, pieces.King, pieces.Bishop, pieces.Knight, pieces.Rook}
@@ -43,7 +55,7 @@ func (b Board) Content() [BOARDSIZE]pieces.Piece {
 // Initialize board
 func InitBoard() *Board {
 	// create board object
-	empty := pieces.NewPiece(pieces.Empty, address.MakeAddr(FIRSTRANK, address.File(0)), "Nothing", true)
+	empty := pieces.NewPiece(pieces.Empty, address.MakeAddr(FIRSTRANK, address.File(A)), "Nothing", true)
 	b := Board{[BOARDSIZE]pieces.Piece{empty}}
 
 	for k := 0; k < BOARDSIZE; k++ {
