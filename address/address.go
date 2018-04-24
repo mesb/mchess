@@ -27,7 +27,7 @@ type Addr struct {
 // string representation of address
 func (a Addr) String() string {
 	f := (int(a.File) + 97)
-	return fmt.Sprintf("%c%v", f, a.Rank)
+	return fmt.Sprintf("%c%v", f, int(a.Rank)+1)
 }
 
 // the pieces are stored in memory in a 1d array of size 64
