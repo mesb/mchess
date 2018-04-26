@@ -106,5 +106,5 @@
 
 
 
-* Notes 
-  See Wiki
+* Other Notes 
+  See Wiki @ [[https://github.com/mesb/mchess/wiki][Mchess Wiki]]
