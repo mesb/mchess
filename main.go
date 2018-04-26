@@ -1,10 +1,11 @@
 package main
 
 import (
-	"github.com/mesb/mchess/board"
+	"github.com/mesb/mchess/sys"
 )
 
 func main() {
-	b := board.InitBoard()
-	board.Printer(*b)
+
+	sys.Run()
+
 }
