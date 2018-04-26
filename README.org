@@ -25,7 +25,14 @@
   chess board. These rules specify the legal moves from location to location on
   the board.
 
-** Analogy
+
+* Installation
+  1. go get -u github.com/mesb/mchess
+  2. cd /path/to/mchess --> This will be in your go workspace
+  3. go build
+  4. ./mchess
+
+* Analogy
    For a 2D or 3D perspective, a chessboard is seen as a square. But who says we
    have to represent the board this way in the computer? The computer may have
    its own view that best suits its tasks and enjoyment of the board.
@@ -97,11 +104,7 @@
    they battle each other.
 
 
-* Installation
-  1. go get -u github.com/mesb/mchess
-  2. cd /path/to/mchess --> This will be in your go workspace
-  3. go build
-  4. ./mchess
+
 
 * Notes 
   See Wiki
