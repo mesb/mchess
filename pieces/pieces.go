@@ -31,19 +31,19 @@ const (
 func (t Typ) String() string {
 	switch t {
 	case King:
-		return fmt.Sprintf("%s", "K")
+		return fmt.Sprintf("%s", "KG")
 	case Queen:
-		return fmt.Sprintf("%s", "Q")
+		return fmt.Sprintf("%s", "QN")
 	case Knight:
 		return fmt.Sprintf("%s", "KT")
 	case Bishop:
-		return fmt.Sprintf("%s", "B")
+		return fmt.Sprintf("%s", "BP")
 	case Rook:
-		return fmt.Sprintf("%s", "R")
+		return fmt.Sprintf("%s", "RK")
 	case Pawn:
-		return fmt.Sprintf("%s", "P")
+		return fmt.Sprintf("%s", "PN")
 	case Empty:
-		return fmt.Sprintf("%s", "E")
+		return fmt.Sprintf("%s", "EY")
 	default:
 		return fmt.Sprintf("Unrecognized type")
 	}
@@ -88,7 +88,7 @@ func (p piece) Address() address.Addr {
 	return p.addr
 }
 
-// get the camp
+// get the c
 func (p piece) Camp() string {
 	return p.camp
 }
@@ -100,11 +100,11 @@ func (p piece) Status() bool {
 
 // the status and the address change
 // the type may also change when a piece is promoted
-func (p *piece) WriteAddr(a address.Addr) {
+func (p piece) WriteAddr(a address.Addr) {
 	p.addr = a
 }
 
 // update status
-func (p *piece) WriteStatus(s bool) {
+func (p piece) WriteStatus(s bool) {
 	p.status = s
 }

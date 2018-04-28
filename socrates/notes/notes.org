@@ -1,0 +1,178 @@
+#+title: Notes on the design of Socrates
+
+* Overview
+  Socrates is an interpreter for chess rules. Socrates is designed from the
+  point of view that the rules of chess are separate from the chess board
+  itself. In other words, a chess board has rules, but those rules are know by
+  someone. Socrates is therefore that someone who knows the rules or who,
+  perhaps, discovered them.
+
+  Each activity on a chess board is legal if and only if it follows certain
+  rules. The pieces of a chess board all her their sets of rules to follow.
+
+  Socrates knows all these rules. Each activity on the chess board is first
+  arbitered by Socrates. When a player moves a pawn from square with address e2
+  to the square address e3, the command or motif is first communicated to
+  Socrates. The player communicates the following to Socrates:
+
+  1. command e.g move
+  2. piece: the piece that will be acted on
+  3. destination: where the piece is dispatched to.
+
+  Chess is an abstract strategy game. Hence, playing the game involves unrolling
+  tactics that are combined to form strategies that enable the player to win a
+  game, or lose if they are inferior to the opponent's.
+
+  The common thoughts about chess is to see it as a battle. Another analogy is
+  to see the board as a Kingdom at an intellectual warfare. Players have
+  territories and they navigate each other's territory in an attempt to capture
+  the other's King.
+
+  Players dispatch their personnel or task force to run errands that are in the
+  guys of tactics.
+
+  Each type of piece has certain rights and power in his/her kingdom and these
+  powers are expressed in the way each piece can move.
+
+  During a real world chess game, players dispatch their pieces by physically
+  moving them on the board. Observers and a real arbiter can tell if a given
+  move is wrong.
+
+  As explicated above, Socrates will replace the arbiter.
+
+* Design Notes of Socrates
+  Communication between the players and Socrates suggests itself naturally.
+  Hence, we need a language that these players and Socrates can speak.
+
+  Interestingly, Chess is a well developed discipline. There are algebraic or
+  symbolic languages built on top of the chess game. The language is simply a
+  command language. Each player commands that his piece, at a given time, should
+  go to this location and do some work, or to go to that location and capture an
+  opponent's piece. All of these actions are expressed as commands.
+
+  A player simply says, for example, move Piece destination
+
+  Socrates receives this command and determines the kind of action to perform.
+  Types of actions include, capture and move...
+
+  The command has the form:
+
+  #+BEGIN_SRC 
+       command ::= cmd piece destination
+           cmd ::= move | capture
+         piece ::= KING | QUEEN | BISHOP | ROOK | KNIGHT | PAWN
+   destination ::= address 
+       address ::= file-rank
+       file    ::= a | b | c | d | e | f | g | h
+       rank    ::= 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7
+  #+END_SRC
+
+  With the grammar above, Socrates and players can communicate.
+
+** Data Flow
+   1. Start System
+   2. Enter command
+   3. if system command, then run command as system
+   4. dispatch command to Socrates
+   5. Socrates validates or judges command
+   6. if command is legal, Socrates performs the move
+   7. if illegal, Socrates reports illegality
+   8. Game state or board is updated accordingly
+
+      
+   Socrates's judgement concerning movement relies on the following information:
+   1. Type of piece
+   2. Source address, that's where the piece is coming from
+   3. Destination address, that's where the piece is going
+
+
+   Here is what he does:
+   1. Parse command
+   2. Evaluate operands which are piece and destination
+   3. If the operands are invalid, then report error
+   4. Apply command to operands
+   5. Update board with current state of affairs
+
+* Components
+  Socrates has the following tools in his workshop.
+
+** Parser + Lexer
+   The parser deconstructs the requests and obtains the command and its operands
+*** Input: Line of Text 
+    The Parse receives a line of text.
+
+*** Action
+    - split line into {COMMAND OP1 OP2}
+    - obtain the command name and create an mchess token for it
+    - obtain OP1 and create it's token
+    - obtain OP2 and create it's token
+    - Prepare a tree structure that represents the command
+    - Package the tree structure for use by others
+
+*** Result
+    - Return the packaged command
+   
+** Validator
+   The validator checks the parts of the request are valid mchess entities. The
+   rules of chess can be applied here. The validator is used by the evaluator.
+   It is here that the rules of chess will be specified and implemented.
+
+*** Input: PIECE | ADDRESS | COMMAND
+    The validator receives an mchess entity as as input.
+
+*** Action
+    Static types help us obtain information about entities. This chess game is
+    statically typed so we know the type of entities we are dealing with at
+    compile time.
+
+    - Receive entity
+    - Determine its type
+    - if address, make sure it's within bounds: 0 - 63
+    - if piece, make sure it's a valid piece type
+    - if command, make sure the chess rules apply
+    
+    Since chess piece do not do anything on their own, and most of the
+    activities are specified as commands, we can build our validator around the
+    validation of the command, itself, with a top-down approach.
+
+    That is, validate the command and make sure that the actions it specifies
+    are valid. In that light, we only need to determine whether the consequences
+    of the command is a legal action on the chess board.
+
+    Hence:
+    - Receive command
+    - Validate Piece
+    - Determine is the Piece can, under normal circumstances, legally go to destination
+    - If it is determined that piece can't move like that, return error or
+      reason
+    - If the piece can make the movement, then signal its validity.
+
+*** Result: Signal ::= Error or Green Light
+    Examine command and its components. If any issues with command, prepare
+    message explaining what went wrong.
+
+    If there are no issues. Then no error is returned, or nothing in that light
+    is said.
+
+    Result it therefore an Error Message that can be populated or empty
+
+
+** Evaluator
+   The evaluator evaluates the operands and the specified command. In the end,
+   the evaluator applies the command to the operands. Eval uses the validator to
+   determine if the tokens it's working on are legal mchess tokens.
+
+*** Input: Command Tree
+    The evaluator receives a parse tree for the commands. 
+
+*** Action
+    - Root of tree is the command
+    - The left subtree is the source of the command(from piece)
+    - The right subtree is the destination of the command (from board)
+    - Apply the command to its operands
+    - Make proper changes on board
+    - Return Error signal
+
+
+
+

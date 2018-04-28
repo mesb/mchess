@@ -1,0 +1,10 @@
+* Task Workspace
+
+** Thursday <2018-04-26 Thu>
+1. Build sys package
+   Sys package runs an interactive and interpretive routine that receives input
+   from the environment and performs actions that are consequences of the input.
+
+   Sys runs an executive loop and responds to user's requests.
+
+   

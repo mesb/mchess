@@ -43,7 +43,7 @@ var DEFAULTFIRSTRANK = [BLOCKSIZE]pieces.Typ{pieces.Rook, pieces.Knight, pieces.
 
 // a board is represented as an array of chess board as an array
 type Board struct {
-	board [BOARDSIZE]pieces.Piece
+	Content [BOARDSIZE]pieces.Piece
 }
 
 /*
@@ -54,12 +54,13 @@ func (b Board) Content() [BOARDSIZE]pieces.Piece {
 
 // Initialize board
 func InitBoard() *Board {
-	// create board object
-	empty := pieces.NewPiece(pieces.Empty, address.MakeAddr(FIRSTRANK, address.File(A)), "Nothing", true)
-	b := Board{[BOARDSIZE]pieces.Piece{empty}}
+
+	b := Board{[BOARDSIZE]pieces.Piece{}}
 
 	for k := 0; k < BOARDSIZE; k++ {
-		b.board[k] = empty
+		// create board object
+		empty := pieces.NewPiece(pieces.Empty, address.TranslateIndex(k), "Nothing", true)
+		b.Content[k] = empty
 	}
 
 	// fill in white's player
@@ -68,22 +69,22 @@ func InitBoard() *Board {
 		// add the first rank of player 1
 		addr := address.MakeAddr(address.Rank(FIRSTRANK), address.File(i))
 		p := pieces.NewPiece(DEFAULTFIRSTRANK[i], addr, "Player 1", true)
-		b.board[addr.Index()] = p
+		b.Content[addr.Index()] = p
 
 		// add the pawns of player 1
 		addr = address.MakeAddr(address.Rank(SECONDRANK), address.File(i))
 		p = pieces.NewPiece(pieces.Pawn, addr, "Player 1", true)
-		b.board[addr.Index()] = p
+		b.Content[addr.Index()] = p
 
 		// add the ranks of player 2
 		addr = address.MakeAddr(address.Rank(EIGTHRANK), address.File(i))
 		p = pieces.NewPiece(DEFAULTFIRSTRANK[i], addr, "Player 2", true)
-		b.board[addr.Index()] = p //
+		b.Content[addr.Index()] = p //
 
 		// add the pawns of player 2
 		addr = address.MakeAddr(address.Rank(SEVENTHRANK), address.File(i))
 		p = pieces.NewPiece(pieces.Pawn, addr, "Player 2", true)
-		b.board[addr.Index()] = p
+		b.Content[addr.Index()] = p
 	}
 
 	// return board
@@ -94,7 +95,7 @@ func InitBoard() *Board {
 func Printer(b Board) {
 	for i := 1; i < BOARDSIZE+1; i++ {
 		j := i - 1
-		fmt.Printf("%v", b.board[j])
+		fmt.Printf("%v", b.Content[j])
 
 		if (i > 0) && (i%8 == 0) {
 			fmt.Println()

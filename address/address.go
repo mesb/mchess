@@ -27,7 +27,7 @@ type Addr struct {
 // string representation of address
 func (a Addr) String() string {
 	f := (int(a.File) + 97)
-	return fmt.Sprintf("%c%v", f, int(a.Rank)+1)
+	return fmt.Sprintf("%c%v::%2d", f, int(a.Rank)+1, a.Index())
 }
 
 // the pieces are stored in memory in a 1d array of size 64
@@ -40,6 +40,14 @@ func (a Addr) Index() (index int) {
 	index = (r * BLOCKSIZE) + f
 
 	return
+}
+
+func TranslateIndex(index int) Addr {
+	rank := (index / 8)
+	file := (index % 8)
+
+	return MakeAddr(Rank(rank), File(file))
+
 }
 
 // construct a new address from a given rank and file

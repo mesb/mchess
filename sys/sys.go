@@ -12,6 +12,7 @@ import (
 	"bufio"
 	"fmt"
 	"github.com/mesb/mchess/board"
+	"github.com/mesb/mchess/socrates"
 	"os"
 	"strings"
 )
@@ -35,7 +36,7 @@ func display(s string) {
 
 // function to display welcome message
 func displayMessage() {
-	display("Welcome to MCHESS\n")
+	display("       Welcome to MCHESS\n")
 	display("-----------------------------\n")
 	display("Enter 'q' or 'quit' to exit\n")
 	display("Enter 'b' or 'board' to see board\n")
@@ -51,23 +52,48 @@ func init() {
 }
 
 func Run() {
+
+FORERUNNER: // a label for the main event loop of mchess
 	for {
 		go display("0~-> ")
 		text, _ := input.ReadString('\n')
-		text = strings.Replace(text, "\n", "", -1)
+		text = strings.TrimSpace(text)
 
-		text = strings.ToLower(text)
-
-		//display("0~-> ")
-		// fmt.Println(text)
-
-		if strings.Compare("q", string(text[ZERO])) == ZERO {
-			fmt.Println("Good Bye!")
-			break
+		if len(text) <= 0 {
+			continue
 		}
 
-		if strings.Compare("b", string(text[ZERO])) == ZERO {
-			board.Printer(*brd)
+		text = strings.ToLower(text)
+		cmd := string(text[0])
+
+		switch cmd {
+		case "b":
+			{
+				board.Printer(*brd)
+			}
+
+		case "q":
+			{
+				fmt.Println("Good Bye!")
+				break FORERUNNER
+			}
+		case "m":
+			{
+				err := socrates.Dialog(text, brd)
+
+				if err != nil {
+					fmt.Printf("%s", err)
+					break
+				}
+
+				board.Printer(*brd)
+			}
+
+		default:
+			{
+				fmt.Println("Enter 'b' or 'q'")
+			}
+
 		}
 
 	}
